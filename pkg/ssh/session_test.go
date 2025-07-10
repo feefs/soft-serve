@@ -26,7 +26,7 @@ import (
 
 func TestSession(t *testing.T) {
 	is := is.New(t)
-	t.Run("authorized repo access", func(t *testing.T) {
+	t.Run("unauthorized repo access", func(t *testing.T) {
 		t.Log("setting up")
 		s, close := setup(t)
 		s.Stderr = os.Stderr
@@ -40,7 +40,7 @@ func TestSession(t *testing.T) {
 		}()
 		t.Log("waiting for session to exit")
 		_, err = s.Output("test")
-		var ee *gossh.ExitMissingError
+		var ee *gossh.ExitError
 		is.True(errors.As(err, &ee))
 		t.Log("session exited")
 		is.NoErr(close())

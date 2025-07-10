@@ -161,8 +161,8 @@ var createTables = Migration{
 			Key   string
 			Value string
 		}{
-			{"allow_keyless", "true"},
-			{"anon_access", access.ReadOnlyAccess.String()},
+			{"allow_keyless", "false"},
+			{"anon_access", access.NoAccess.String()},
 			{"init", "true"},
 		}
 

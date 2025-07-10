@@ -17,7 +17,7 @@ stdout 'false.*'
 
 # check default anon-access
 soft settings anon-access
-stdout 'read-only.*'
+stdout 'no-access.*'
 
 # change anon-access to all available options, and check them
 soft settings anon-access no-access

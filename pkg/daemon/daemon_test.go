@@ -93,7 +93,7 @@ func TestIdleTimeout(t *testing.T) {
 	}
 }
 
-func TestInvalidRepo(t *testing.T) {
+func TestNoAnonAccess(t *testing.T) {
 	c, err := net.Dial("tcp", testDaemon.addr) //nolint:noctx
 	if err != nil {
 		t.Fatalf("failed to connect to daemon: %v", err)
@@ -102,8 +102,8 @@ func TestInvalidRepo(t *testing.T) {
 		t.Fatalf("expected nil, got error: %v", err)
 	}
 	_, err = readPktline(c)
-	if err != nil && err.Error() != git.ErrInvalidRepo.Error() {
-		t.Errorf("expected %q error, got %q", git.ErrInvalidRepo, err)
+	if err != nil && err.Error() != git.ErrNotAuthed.Error() {
+		t.Errorf("expected %q error, got %q", git.ErrNotAuthed, err)
 	}
 }
 

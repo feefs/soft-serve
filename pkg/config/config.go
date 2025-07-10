@@ -137,6 +137,12 @@ type LFSConfig struct {
 // JobsConfig is the configuration for cron jobs.
 type JobsConfig struct {
 	MirrorPull string `env:"MIRROR_PULL" yaml:"mirror_pull"`
+	GcsBackup  string `env:"GCS_BACKUP" yaml:"gcs_backup"`
+}
+
+// GcsBackupConfig is the configuration for the GCS backup cron job.
+type GcsBackupConfig struct {
+	Bucket string `env:"BUCKET" yaml:"bucket"`
 }
 
 // Config is the configuration for Soft Serve.
@@ -167,6 +173,9 @@ type Config struct {
 
 	// Jobs is the configuration for cron jobs
 	Jobs JobsConfig `envPrefix:"JOBS_" yaml:"jobs"`
+
+	// GcsBackup is the configuration for gcs backup.
+	GcsBackup GcsBackupConfig `envPrefix:"GCS_BACKUP_" yaml:"gcs_backup"`
 
 	// InitialAdminKeys is a list of public keys that will be added to the list of admins.
 	InitialAdminKeys []string `env:"INITIAL_ADMIN_KEYS" envSeparator:"\n" yaml:"initial_admin_keys"`
@@ -220,6 +229,8 @@ func (c *Config) Environ() []string {
 		fmt.Sprintf("SOFT_SERVE_LFS_ENABLED=%t", c.LFS.Enabled),
 		fmt.Sprintf("SOFT_SERVE_LFS_SSH_ENABLED=%t", c.LFS.SSHEnabled),
 		fmt.Sprintf("SOFT_SERVE_JOBS_MIRROR_PULL=%s", c.Jobs.MirrorPull),
+		fmt.Sprintf("SOFT_SERVE_JOBS_GCS_BACKUP=%s", c.Jobs.GcsBackup),
+		fmt.Sprintf("SOFT_SERVE_GCS_BACKUP_BUCKET=%s", c.GcsBackup.Bucket),
 	}...)
 
 	return envs
@@ -395,6 +406,7 @@ func DefaultConfig() *Config {
 		},
 		Jobs: JobsConfig{
 			MirrorPull: "@every 10m",
+			GcsBackup:  "@weekly",
 		},
 	}
 }
